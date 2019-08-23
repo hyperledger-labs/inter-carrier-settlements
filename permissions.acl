@@ -1,0 +1,147 @@
+/**
+ * Sample access control list.
+ 
+rule EverybodyCanReadEverything {
+    description: "Allow all participants read access to all resources"
+    participant: "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: READ
+    resource: "tmf.catalyst.blockchain.usecasea.*"
+    action: ALLOW
+}
+*/
+rule EverybodyCanSubmitTransactions {
+    description: "Allow all participants to submit transactions"
+    participant: "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: CREATE
+    resource: "tmf.catalyst.blockchain.usecasea.SendInterconnectTrafficRequest"
+    action: ALLOW
+}
+
+rule EverybodyCanSubmitBillApproveTransactions {
+    description: "Allow all participants to submit transactions"
+    participant: "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: CREATE
+    resource: "tmf.catalyst.blockchain.usecasea.ApproveBillRecord"
+    action: ALLOW
+}
+
+rule EverybodyCanSubmitBillPayTransactions {
+    description: "Allow all participants to submit transactions"
+    participant: "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: CREATE
+    resource: "tmf.catalyst.blockchain.usecasea.PayCarrier"
+    action: ALLOW
+}
+
+rule EverybodyCanSubmitCurParticipantTransactions {
+    description: "Allow all participants to submit transactions"
+    participant: "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: CREATE
+    resource: "tmf.catalyst.blockchain.usecasea.GetCurParticipant"
+    action: ALLOW
+}
+
+rule OwnerHasFullAccessToTheirCDRAssetsHome {
+    description: "Allow all participants full access to their assets"
+    participant(p): "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: ALL
+    resource(r): "tmf.catalyst.blockchain.usecasea.InterConnectCdr"
+    condition: (r.homeCarrierCode.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+rule OwnerHasFullAccessToTheirCDRAssetsOrigin {
+    description: "Allow all participants full access to their assets"
+    participant(p): "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: ALL
+    resource(r): "tmf.catalyst.blockchain.usecasea.InterConnectCdr"
+    condition: (r.originCarrierCode.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+rule OwnerHasFullAccessToTheirCDRAssetsDestination {
+    description: "Allow all participants full access to their assets"
+    participant(p): "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: ALL
+    resource(r): "tmf.catalyst.blockchain.usecasea.InterConnectCdr"
+    condition: (r.destinationCarrierCode.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+} 
+
+rule OwnerHasFullAccessToTheirBillAssetsOrigin {
+    description: "Allow all participants full access to their assets"
+    participant(p): "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: ALL
+    resource(r): "tmf.catalyst.blockchain.usecasea.InterCarrierBillingRecords"
+    condition: (r.originProvider.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+rule OwnerHasFullAccessToTheirBillAssetsDestination {
+    description: "Allow all participants full access to their assets"
+    participant(p): "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: ALL
+    resource(r): "tmf.catalyst.blockchain.usecasea.InterCarrierBillingRecords"
+    condition: (r.billedProvider.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+rule OwnerHasFullAccessToTheirOwedAssetsOrigin {
+    description: "Allow all participants full access to their assets"
+    participant(p): "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: ALL
+    resource(r): "tmf.catalyst.blockchain.usecasea.InterCarrierOwed"
+    condition: (r.originProvider.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+rule EverybodyCanReadCollege {
+    description: "Allow all participants read access to all resources"
+    participant: "tmf.catalyst.blockchain.usecasea.*"
+    operation: READ
+    resource: "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    action: ALLOW
+}
+
+rule OwnerHasFullAccessToTheirOwedAssetsDestination {
+    description: "Allow all participants full access to their assets"
+    participant(p): "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: READ
+    resource(r): "tmf.catalyst.blockchain.usecasea.InterCarrierOwed"
+    condition: (r.originProvider.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+
+rule BilledOwnerHasFullAccessToTheirOwedAssetsOrigin {
+    description: "Allow all participants full access to their assets"
+    participant(p): "tmf.catalyst.blockchain.usecasea.NetworkProvider"
+    operation: ALL
+    resource(r): "tmf.catalyst.blockchain.usecasea.InterCarrierOwed"
+    condition: (r.billedProvider.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "org.hyperledger.composer.system.Participant"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
