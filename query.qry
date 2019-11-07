@@ -1,0 +1,160 @@
+/**
+ * New query file
+ */
+
+
+query selectAllEvent {
+  description: "Specific Event Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+}
+
+query selectAllBlackListMsisdn {
+  description: "Specific BlackListMsisdn Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.BlackListMsisdn
+}
+
+query selectAllBlackListMccCode {
+  description: "Specific BlackListMsisdn Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.BlackListMccCode
+}
+
+query selectSingleEvent {
+  description: "Specific Event Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (cdrID==_$cdrID)
+}
+
+query selectSpecificEvent {
+  description: "Specific Event Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.type==_$type AND interconnectEvent.usageCharacteristic.isMvnoEvent==_$isMvnoEvent AND interconnectEvent.usageCharacteristic.isInternationalRoaming==_$isInternationalRoaming AND interconnectEvent.usageCharacteristic.isNationalRoaming==_$isNationalRoaming)
+}
+
+query getFraudMarkedEvents {
+  description: "Specific Event Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE ((interconnectEvent.type=="MT" OR interconnectEvent.type=="SMS_MT") AND dataUsageMonitor.isMarkedForFraud==true)
+}
+
+query selectIRBillingEvent {
+  description: "Specific Event Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.type==_$type AND interconnectEvent.usageCharacteristic.isInternationalRoaming==true)
+}
+
+query selectThresholdExceededEvents {
+  description: "Specific Threshold Exceed Events Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.type==_$type AND dataUsageMonitor.isThresholdReached==_$isThresholdReached)
+}
+
+query getSpecificNetworkProvider {
+  description: "Specific Network Service Provider Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.NetworkProvider
+       WHERE (providerID==_$providerID)
+}
+
+query getAllNetworkProvider {
+  description: "Specific Network Service Provider Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.NetworkProvider
+}
+
+query getSpecificCarrierOwedRecord {
+  description: "Specific Network Service Provider Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterCarrierOwed
+       WHERE (recordID==_$recordID)
+}
+
+query getAllCarrierOwedRecord {
+  description: "Specific Network Service Provider Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterCarrierBillingRecords
+}
+
+query getAllCarrierOwedRecordbyOrigin {
+  description: "Specific Network Service Provider Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterCarrierBillingRecords
+       WHERE (originProvider==_$originProvider AND approved==false)
+}
+
+query getAllCarrierOwedRecordbyOriginBilled {
+  description: "Specific Network Service Provider Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterCarrierBillingRecords
+       WHERE (originProvider==_$originProvider AND billedProvider==_$billedProvider AND approved==false)
+}
+
+query q1 {
+  description: "Select All Event Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+}
+
+query q2 {
+  description: "Select All Event Query based on Event Flags Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.usageCharacteristic.isMvnoEvent==_$isMvnoEvent AND interconnectEvent.usageCharacteristic.isInternationalRoaming==_$isInternationalRoaming AND interconnectEvent.usageCharacteristic.isNationalRoaming==_$isNationalRoaming)
+}
+
+query q3 {
+  description: "Select All Event Query based on Event Flags and imsi Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.usageCharacteristic.isMvnoEvent==_$isMvnoEvent AND interconnectEvent.usageCharacteristic.isInternationalRoaming==_$isInternationalRoaming AND interconnectEvent.usageCharacteristic.isNationalRoaming==_$isNationalRoaming AND interconnectEvent.usageCharacteristic.imsi== _$imsi)
+}
+
+query q4 {
+  description: "Select All Event Query based on Event Flags and Call Type Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.type==_$type AND interconnectEvent.usageCharacteristic.isMvnoEvent==_$isMvnoEvent AND interconnectEvent.usageCharacteristic.isInternationalRoaming==_$isInternationalRoaming AND interconnectEvent.usageCharacteristic.isNationalRoaming==_$isNationalRoaming)
+}
+
+
+query q5 {
+  description: "Select All Event Query based on Call Type Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.type==_$type)
+}
+
+query q6 {
+  description: "Select All Event Query based on imsi Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.usageCharacteristic.imsi== _$imsi)
+}
+
+query q7 {
+  description: "Select All Event Query based on Call Type and imsi  Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.type==_$type AND interconnectEvent.usageCharacteristic.imsi== _$imsi)
+}
+
+query q8 {
+  description: "Select All Event Query based on Event Flags, Call Type and imsi Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterConnectCdr
+       WHERE (interconnectEvent.type==_$type AND interconnectEvent.usageCharacteristic.isMvnoEvent==_$isMvnoEvent AND interconnectEvent.usageCharacteristic.isInternationalRoaming==_$isInternationalRoaming AND interconnectEvent.usageCharacteristic.isNationalRoaming==_$isNationalRoaming AND interconnectEvent.usageCharacteristic.imsi== _$imsi)
+}
+
+query getInterCarrierOwed {
+  description: "Select All Event Query based on Event Flags, Call Type and imsi Query"
+  statement:
+   SELECT tmf.catalyst.blockchain.usecasea.InterCarrierOwed
+      WHERE (originProvider.providerID==_$originID AND billedProvider.providerID==_$billedID)
+}
