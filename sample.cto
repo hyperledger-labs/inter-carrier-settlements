@@ -1,0 +1,173 @@
+/**
+ * Sample business network definition.
+ */
+namespace tmf.catalyst.blockchain.usecasea
+
+concept UsageCharacteristic {
+  o Boolean isMvnoEvent optional
+  o Boolean isInternationalRoaming optional
+  o Boolean isNationalRoaming optional
+  o String imsi
+  o String imei
+  o Long startDateTime
+  o Long endDateTime
+  o Integer utcTimeOffset
+  o Long originatingNumber optional
+  o Long destinationNumber optional
+  o Long dataVolumeIncoming optional
+  o Long dataVolumeOutgoing optional
+  o Double duration
+  o String causeForTermination optional
+  o String teleServiceCode
+  o String bearerServiceCode
+}
+concept RelatedParty {
+  o Integer originMCC
+  o Integer originMNC
+  o Integer destinationMCC
+  o Integer destinationMNC
+  o Integer homeMCC
+  o Integer homeMNC
+}
+concept RatedProductUsage {
+  o Double chargeAmount
+  o Currency currencyCode optional
+  o Double chargeAmountRetail optional
+}
+concept DataUsageMonitor {
+  o Boolean isThresholdReached 
+  o Boolean isMarkedForFraud optional
+}
+concept InterconnectEvent {
+  o String id
+  o Long date
+  o String type
+  o UsageCharacteristic usageCharacteristic
+  o RelatedParty relatedParty
+}
+
+concept Currency {
+  o String name
+  o Double conversionRate
+}
+
+participant NetworkProvider identified by providerID {
+  // mobile network code
+  o Integer mcc
+ // mobile country code
+  o Integer mnc
+ // mcc + mnc
+  // Auto Approve Flag
+  o Boolean autoApprove optional
+  o Double autoApproveLimit optional
+  o String providerID
+  o String providerName
+  o String providerCountry
+  o Currency providerCurrency
+  o Double moRateNatRoam
+  o Double mtRateNatRoam
+  o Double smsmoRateNatRoam
+  o Double smsmtRateNatRoam
+  o Double dataRateNatRoam
+  o Double moRateIntRoam
+  o Double mtRateIntRoam
+  o Double smsmoRateIntRoam
+  o Double smsmtRateIntRoam
+  o Double dataRateIntRoam
+  o Double moRateMvnoRoam
+  o Double mtRateMvnoRoam
+  o Double smsmoRateMvnoRoam
+  o Double smsmtRateMvnoRoam
+  o Double dataRateMvnoRoam
+  o Double moRateRet
+  o Double mtRateRet
+  o Double smsmoRateRet
+  o Double smsmtRateRet
+  o Double dataRateRet
+}
+
+asset InterCarrierBillingRecords identified by recordID{
+  o String recordID
+  --> NetworkProvider originProvider
+  --> NetworkProvider billedProvider
+  --> InterConnectCdr billEvent
+  o Long eventTime optional
+  o Boolean approved
+}
+
+asset InterCarrierOwed identified by recordID{
+  o String recordID
+  --> NetworkProvider originProvider
+  --> NetworkProvider billedProvider
+  o Double amount
+}
+
+asset InterConnectCdr identified by cdrID {
+  o String cdrID
+  o InterconnectEvent interconnectEvent
+  o RatedProductUsage ratedProductUsage
+  o DataUsageMonitor dataUsageMonitor
+  --> NetworkProvider homeCarrierCode
+  --> NetworkProvider originCarrierCode
+  --> NetworkProvider destinationCarrierCode
+}
+
+asset BlackListMsisdn identified by blackListMsisdn {
+  o String blackListMsisdn
+}
+
+asset BlackListMccCode identified by blackListMccCode {
+  o String blackListMccCode
+}
+
+transaction ApproveBillRecord {
+  --> InterCarrierBillingRecords billRecord
+}
+
+transaction PayCarrier {
+  --> NetworkProvider fromProvider
+  --> NetworkProvider toProvider
+  o Double amount
+}
+
+transaction UpdateInterBill {
+  o String[] billRecords
+}
+
+transaction SendInterconnectTrafficRequest {
+  o InterconnectEvent[] interconnectEvent
+}
+
+transaction UpdateInterconnectTrafficRequest {
+  o InterConnectCdr updateCDR
+}
+
+transaction GetCurParticipant {
+  o InterconnectEvent interconnectEvent
+}
+
+transaction InitializePayLedger {
+}
+
+transaction Consolidatedbill {
+  o String callType optional
+  o String isMvnoEvent optional
+  o String isInternationalRoaming optional
+  o String isNationalRoaming optional
+  o String imsi optional
+  o String transID optional
+}
+
+
+event newCDREvent {
+  o String cdrID
+  o String homeCarrierCode
+  o String originCarrierCode
+  o String destinationCarrierCode
+}
+
+event newBillEvent {
+  o String transID optional
+  o Double consolidatedAmount
+  o Double consolidatedRetailAmount optional
+}
